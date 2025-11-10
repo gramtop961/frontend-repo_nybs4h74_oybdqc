@@ -1,4 +1,3 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/themes";
 import { Copy, Check } from "lucide-react";
 import { useState } from "react";
 
@@ -55,6 +54,7 @@ function CodeBlock({ code }){
 }
 
 export default function CodeEmbed(){
+  const [active, setActive] = useState('javascript')
   return (
     <section id="code" className="relative py-20 bg-[#05070B] border-t border-white/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -65,24 +65,22 @@ export default function CodeEmbed(){
           </div>
         </div>
 
-        <Tabs defaultValue="javascript" className="w-full">
-          <TabsList className="flex w-full max-w-[520px] overflow-hidden rounded-lg border border-white/10 bg-white/5">
-            <TabsTrigger value="javascript" className="flex-1 px-4 py-2 text-sm text-white/80 data-[state=active]:bg-white/10">JavaScript</TabsTrigger>
-            <TabsTrigger value="react" className="flex-1 px-4 py-2 text-sm text-white/80 data-[state=active]:bg-white/10">React</TabsTrigger>
-            <TabsTrigger value="node" className="flex-1 px-4 py-2 text-sm text-white/80 data-[state=active]:bg-white/10">Node</TabsTrigger>
-          </TabsList>
-          <div className="mt-6">
-            <TabsContent value="javascript">
-              <CodeBlock code={snippets.javascript} />
-            </TabsContent>
-            <TabsContent value="react">
-              <CodeBlock code={snippets.react} />
-            </TabsContent>
-            <TabsContent value="node">
-              <CodeBlock code={snippets.node} />
-            </TabsContent>
+        <div className="w-full">
+          <div className="flex w-full max-w-[520px] overflow-hidden rounded-lg border border-white/10 bg-white/5">
+            {['javascript','react','node'].map((key) => (
+              <button
+                key={key}
+                onClick={() => setActive(key)}
+                className={`flex-1 px-4 py-2 text-sm transition ${active===key ? 'bg-white/10 text-white' : 'text-white/80 hover:bg-white/10'}`}
+              >
+                {key === 'javascript' ? 'JavaScript' : key === 'react' ? 'React' : 'Node'}
+              </button>
+            ))}
           </div>
-        </Tabs>
+          <div className="mt-6">
+            <CodeBlock code={snippets[active]} />
+          </div>
+        </div>
       </div>
     </section>
   )
